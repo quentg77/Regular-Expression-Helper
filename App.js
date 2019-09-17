@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, ScrollView } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import App from './src';
 
 export default function Main() {
 	return (
 		<PaperProvider>
-			<App />
+			<ScrollView>
+				<App />
+			</ScrollView>
 		</PaperProvider>
 	);
 }

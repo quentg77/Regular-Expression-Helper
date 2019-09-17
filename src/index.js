@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Dimensions, StatusBar } from "react-native";
 import { Text, TextInput, Button } from 'react-native-paper';
 import styled from 'styled-components';
@@ -7,9 +7,10 @@ import styled from 'styled-components';
 const MatchListComponent = ({ matchList }) => {
 	return (
 		<MatchListContainer>
-			{matchList.map(() => {
-				return <MatchBlock>
-
+			{matchList.map(item => {
+				return <MatchBlock key={item.index}>
+					<Text style={styles.matchedText}>{item.text}</Text>
+					<Text style={styles.matchedIndex}>Find at index {item.index} to {item.lastIndex}</Text>
 				</MatchBlock>
 			})}
 		</MatchListContainer>
@@ -21,8 +22,7 @@ export default function Screen() {
 
 	const [RegExpEntrie, setRegExpEntrie] = useState(null);
 	const [ExempleTextEntrie, setExempleTextEntrie] = useState(null);
-
-	let matchList = []
+	const [matchList, setMatchList] = useState([]);
 
 	useEffect(() => {
 		console.log('text change : ' + RegExpEntrie);
@@ -31,18 +31,18 @@ export default function Screen() {
 	const runRegexp = () => {
 		const reg = new RegExp(RegExpEntrie, "g");
 
-		matchList = [];
+		let resList = [];
 
 		while ((match = reg.exec(ExempleTextEntrie)) !== null) {
 			console.log(match.index + ' ' + reg.lastIndex);
-			matchList.push({
+			resList.push({
 				text: match[0],
 				index: match.index,
 				lastIndex: reg.lastIndex
 			});
 		}
 
-		console.log(matchList);
+		setMatchList(resList);
 	}
 
 	return (
@@ -108,7 +108,7 @@ const ExempleTextContainer = styled.View`
 `
 
 const MatchListContainer = styled.View`
-	width: ${getPercentWidth(80)};
+	width: ${getPercentWidth(100)};
 `
 
 const RegEntBlock = styled.View`
@@ -119,9 +119,10 @@ const RegEntBlock = styled.View`
 `
 
 const MatchBlock = styled.View`
-	flex: 1;
-	justify-content: center;
-	align-items: center;
+	padding: 5px;
+	border-top-width: 1px;
+	border-top-color: lightgrey;
+	background-color: #F8F8FF;
 `
 
 const styles = StyleSheet.create({
@@ -143,5 +144,15 @@ const styles = StyleSheet.create({
 		margin: 5,
 		fontSize: 30,
 		color: "grey"
+	},
+	matchedText: {
+		marginLeft: 10,
+		fontSize: 26,
+		color: "#202020"
+	},
+	matchedIndex: {
+		marginLeft: 10,
+		fontSize: 18,
+		color: "darkgrey"
 	}
 })
