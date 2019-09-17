@@ -279,3 +279,5 @@ typings/
 .nfs*
 
 # End of https://www.gitignore.io/api/reactnative
+
+web-build
